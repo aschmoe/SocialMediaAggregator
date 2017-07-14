@@ -1,0 +1,236 @@
+[
+  {  
+    "_id":"12345", // mongodb id
+    // Manually entered (when created via api)
+    "type": "city",
+    "name":"Oakland,_California",
+    "label": "Oakland",
+    "geojsonUrl": "https://raw.githubusercontent.com/substack/oakland-neighborhoods/master/neighborhoods.geojson",
+    // From Google Places API
+    "lat":37.8044444,
+    "lng":-122.2697222,
+    // From Google Civic Info API (see IV.3 of v2_specs.md)
+    "representatives": [
+      // People from offices where the divisionId is a child of the state level
+      // Exmaples from https://www.googleapis.com/civicinfo/v2/representatives?address=37.845553%2C-122.234191&key={YOUR_API_KEY}:
+      // - ocd-division/country:us/state:ca/county:alameda
+      // - ocd-division/country:us/state:ca/place:oakland
+      // - ocd-division/country:us/state:ca/sldu:9
+      {
+       // from "offices"
+       "office": "Mayor",
+       "divisionId": "ocd-division/country:us/state:ca/place:oakland",
+       // from "officials"
+       "name": "Libby Schaaf",
+       "address": [
+        {
+         "line1": "1 Frank H. Ogawa Plaza 3rd Floor",
+         "city": "oakland",
+         "state": "CA",
+         "zip": "94612"
+        }
+       ],
+       "party": "Non-partisan",
+       "phones": [
+        "(510) 238-3141"
+       ],
+       "urls": [
+        "http://www2.oaklandnet.com/Government/o/Mayor/index.htm"
+       ],
+       "photoUrl": "http://www2.oaklandnet.com/oakca1/groups/ceda/documents/image/oak051245.jpg",
+       "emails": [
+        "mayors-schedule@oaklandnet.com"
+       ],
+       "channels": [
+        {
+         "type": "Facebook",
+         "id": "297953162283"
+        },
+        {
+         "type": "Twitter",
+         "id": "LibbySchaaf"
+        }
+       ]
+      },
+    ]
+    // Set from API
+    "agencies":[  
+      {  
+        "name":"local",
+        "youtube":{
+
+        },
+        "twitter": {
+          "frequency": 3000,
+          "feeds": [
+            {
+              "type": "account",
+              "query": "Oakland"
+            },
+            {
+              "type": "hashtag",
+              "query": "govtech"
+            }
+          ]
+        },
+        "facebook": {
+          "frequency": 3000,
+          "feeds": [
+            {
+              "type": "account",
+              "frequency": 24000, // overrides frequency on facebook-level
+              "query": "cristiano"
+            },
+            {
+              "type": "hashtag",
+              "query": "govtech"
+            }
+          ]
+        },
+        "instagram": {
+          "frequency": 3000,
+          "feeds": [
+            {
+              "type": "account",
+              "frequency": 24000,
+              "query": "oaklandmuseumca"
+            },
+            {
+              "type": "account",
+              "query": "oaklandhasjobs"
+            }
+          ]
+        },
+        "socrata": {
+          "frequency": 3000,
+          "feeds": [  
+            {
+              "type": "crime",
+              "url": "https://data.oaklandnet.com/resource/ym6k-rx7a.json"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  {
+    "_id":"12346", // mongodb id
+    // Manually entered (when created via api)
+    "parent": "12345", // References parent city (Oakland)
+    "type": "neighborhood",
+    "name":"Rockridge,_Oakland,_California",
+    "label": "Rockridge",
+    // From Wikipedia
+    "teaser": "Rockridge is a residential neighborhood and commercial district in Oakland, California. Rockridge is generally defined as the area east of Telegraph Avenue, south of the Berkeley city limits, west of the Oakland hills and north of the intersection of Pleasant Valley Avenue/51st Street and Broadway. It is known for being one of the wealthiest areas of Oakland. Rockridge was listed by Money Magazine in 2002 as one of the \"best places to live\".",
+    // => teaser is text-only, first paragraph, with links, citations stripped)
+    "description": "...", 
+    // => description is full html returned by these jQuery commands (can be run in console on wikipediaUrl below).  See description.html for an example:
+    //html = jQuery("#mw-content-text");
+    //html.find("#coordinates, .infobox, #toc, .mw-editsection, .noprint, .thumb, #References, .reflist, .navbox").remove();
+    //html.html();
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Rockridge03102006.JPG/250px-Rockridge03102006.JPG",
+    "wikipediaUrl": "https://en.wikipedia.org/wiki/Rockridge,_Oakland,_California",
+    // From Google Civic Info API (see IV.3 of v2_specs.md)
+    "representatives": [
+      // People from offices where the divisionId is on the child level of the county or place
+      // Exmaples from https://www.googleapis.com/civicinfo/v2/representatives?address=37.845553%2C-122.234191&key={YOUR_API_KEY}:
+      // - ocd-division/country:us/state:ca/county:alameda/council_district:5
+      // - ocd-division/country:us/state:ca/place:oakland/council_district:1
+      {
+       // from "offices"
+       "name": "Board of Supervisors, District 5",
+       "divisionId": "ocd-division/country:us/state:ca/county:alameda/council_district:5",
+       // from "officerts"
+       "name": "Keith Carson",
+       "address": [
+        {
+         "line1": "1221 oak street",
+         "city": "oakland",
+         "state": "CA",
+         "zip": "94612"
+        }
+       ],
+       "party": "Nonpartisan",
+       "phones": [
+        "(510) 272-6695"
+       ],
+       "urls": [
+        "http://www.acgov.org/board/district5/"
+       ],
+       "channels": [
+        {
+         "type": "Facebook",
+         "id": "keith.carson"
+        },
+        {
+         "type": "Twitter",
+         "id": "keith_carson"
+        }
+       ]
+      },
+    ]
+    // From geojson url on parent: https://raw.githubusercontent.com/substack/oakland-neighborhoods/master/neighborhoods.geojson
+    "geometry": {
+      type: "Polygon",
+      coordinates: [
+      [
+      [
+      -122.281693,
+      37.806049,
+      0
+      ],
+      [
+      -122.292328,
+      37.80846,
+      0
+      ],
+      [
+      -122.294609,
+      37.802181,
+      0
+      ],
+      [
+      -122.288467,
+      37.803173,
+      0
+      ],
+      [
+      -122.28598,
+      37.802662,
+      0
+      ],
+      [
+      -122.279968,
+      37.800781,
+      0
+      ],
+      [
+      -122.280502,
+      37.803421,
+      0
+      ],
+      [
+      -122.279068,
+      37.80547,
+      0
+      ],
+      [
+      -122.281693,
+      37.806049,
+      0
+      ]
+      ]
+      ]
+    },
+    // From Wikipedia
+    "lat":37.8044444,
+    "lng":-122.2697222,
+    // Set from API
+    "agencies": [
+      "instagram": {...},
+      "yelp": {...},
+      ...
+    ]
+  }
+]

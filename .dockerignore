@@ -1,9 +1,9 @@
-node_modules
 instagram-config.js
 app.log
 npm-debug.log
 .env
 debug.txt
 port.yml
-rancher
 docker-compose.yml
+docker-compose.dev.yml
+rancher

@@ -14,7 +14,7 @@ The application extracts data from 4 platforms (Facebook, Twitter, Instagram, Yo
    - logging_level: logging level inside app. Possible values: debug, info.
    
 3. Run docker-compose up
-4. Authenticate the app with Instagram by opening a browser on the url: http://localhost:8080/instagram/authenticate. This step must be followed just once, as the access token is saved in the config file and reused after this.
+4. Authenticate the app with Instagram by opening a browser on the url: http://localhost:8084/instagram/authenticate. This step must be followed just once, as the access token is saved in the config file and reused after this.
 
 ## Social platforms limitations
 
@@ -71,60 +71,83 @@ There are 2 collections for this repo.
 
 - Create User **Requires auth**
 ```sh
-curl -u USERNAME -X POST -H "Content-Type: application/json" -d '{
-    "name": "issaquah_wa",
+curl -u proudCity -X POST -H "Content-Type: application/json" -d '{
+    "type": "city",
+    "name": "Oakland,_California",
+    "label": "Oakland",
+    "geojsonUrl": "https://raw.githubusercontent.com/substack/oakland-neighborhoods/master/neighborhoods.geojson",
     "agencies": [
-      {
-        "name": "default",
-        "twitter":[
-           "@albatrossdigi"
-        ],
-        "facebook":[
-           "@DonaldTrump"
-        ],
-        "youtube": [
-          "@SenatorSanders"
-        ],
-        "instagram": [
-          "@github"
-        ]
-      }
+        {
+            "name": "local",
+            "youtube": {},
+            "twitter": {
+                "frequency": 3000,
+                "feeds": [
+                    {
+                        "type": "account",
+                        "query": "Oakland"
+                    }
+                ]
+            },
+            "instagram": {
+                "frequency": 3000,
+                "feeds": [
+                    {
+                        "type": "account",
+                        "frequency": 24000,
+                        "query": "oaklandmuseumca"
+                    },
+                    {
+                        "type": "account",
+                        "query": "oaklandhasjobs"
+                    }
+                ]
+            }
+        }
     ]
 }' 'http://localhost:8084/user/create'
 ```
 
 - Run Aggregator for user **Requires auth**
 ```sh
-curl -u USERNAME -X GET -H "Content-Type: application/json" 'http://localhost:8080/user/newyork_ny/aggregate'
+curl -u USERNAME -X GET -H "Content-Type: application/json" 'http://localhost:8084/user/newyork_ny/aggregate'
 ```
 
 - Update User **Requires auth**
 ```sh
-curl -u USERNAME -X POST -H "Content-Type: application/json" -d '{
-    "name": "issaquah_wa",
+curl -u proudCity -X POST -H "Content-Type: application/json" -d '{
+    "name": "Oakland,_California",
     "agencies": [
-      {
-        "name": "default",
-        "twitter":[
-           "@albatrossdigi",
-           "#govtech"
-        ]
-      }
+        {
+            "instagram": {
+                "feeds": [
+                    {
+                        "type": "account",
+                        "query": "athletics"
+                    }
+                ]
+            }
+        }
     ]
 }' 'http://localhost:8084/user/update'
 ```
 
 - Remove social account + posts **Requires auth**
 ```sh
-curl -u USERNAME -X POST -H "Content-Type: application/json" -d '{
-    "name": "issaquah_wa",
+curl -u proudCity -X POST -H "Content-Type: application/json" -d '{
+    "name": "Oakland,_California",
     "agencies": [
-      {
-        "name": "default",
-        "facebook":[
-           "@cristiano"
-        ]
-      }
+        {
+            "name": "local",
+            "instagram": {
+                "feeds": [
+                    {
+                        "type": "account",
+                        "query": "athletics"
+                    }
+                ]
+            }
+        }
     ],
     "deleteMode": "true"
 }' 'http://localhost:8084/user/update'
@@ -136,8 +159,9 @@ curl -u USERNAME -X POST -H "Content-Type: application/json" -d '{
     "name": "issaquah_wa",
     "agencies": [
       "default"
-    ]
-}' 'http://localhost:8084/user/delete'
+    ],
+    "deleteMode": "true"
+}' 'http://localhost:8084/user/update'
 ```
 
 - Delete user + posts **Requires auth**
@@ -147,21 +171,43 @@ curl -u USERNAME -X POST -H "Content-Type: application/json" -d '{
 }' 'http://localhost:8084/user/delete'
 ```
 
+## Query API
+
 - Get feed for all user agencies
--- in form /api/:user/feed/
+-- in form ```/api/:user/feed/```
 ```sh
-curl -X GET -H "Content-Type: application/json" 'http://localhost:8080/api/issaquah_wa/feed'
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8084/api/issaquah_wa/feed'
 ```
 
 - Get feed for user agency
--- in form /api/:user/feed/:agency
+-- in form ```/api/:user/feed?agency=AGENCY```
 ```sh
-curl -X GET -H "Content-Type: application/json" 'http://localhost:8080/api/issaquah_wa/feed/default'
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8084/api/issaquah_wa/feed?agency=local'
 ```
 
-- Get feed with criteria
+- Get feed with services criteria
+-- in form ```/api/:user/feed?services[]=SERVICE```
 ```sh
-curl -X GET -H "Content-Type: application/json" 'http://localhost:8080/api/issaquah_wa/feed/default?services[]=facebook'
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8084/api/issaquah_wa/feed?services[]=facebook'
+```
+
+- Get feed from individual accounts
+-- in form ```api/:user/feed/accounts/:accounts```
+```sh
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8084/api/issaquah_wa/feed/accounts/facebook:issaquah,twitter:issaquah'
+```
+
+- Impose time bounds
+-- in form ```/api/:user/feed?before=YYYY-MM-DDT00:00:00.000Z&after=YYYY-MM-DDT00:00:00.000Z```
+```sh
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8084/api/issaquah_wa/feed?before=2016-03-14T00:00:00.000Z&after=2016-03-13T00:00:00.000Z'
+```
+
+- Order feed
+-- ```orderBy``` defaults to "date", ```order``` defaults to "desc"
+-- in form ```/api/:user/feed?orderBy=FIELD&order=ORDER```
+```sh
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8084/api/issaquah_wa/feed?orderBy=date&order=asc'
 ```
 
 Response sample:

@@ -1,0 +1,33 @@
+{  
+  "_id":id,
+  "loc":{  
+    "address":"{\"address\":\"9600 MADDUX DR\",\"city\":\"Oakland\",\"state\":\"CA\",\"zip\":\"\"}",
+    "coordinates":[  
+      -122.18593,
+      37.737155
+    ],
+    "type":"Point"
+  },
+  "likes":0,
+  "text":"Corvallis High School",
+  "match":"school",
+  "service":"foursquare",
+  "date_extracted":  ISODate("2015-10-04T19:49:14.713  Z"),
+  "date":date,
+  "id":"15-039565",
+  "agencyName":"default",
+  "userName":"oakland_ca",
+  googleLocal: {
+    "id": "DAIzaSyAqSVs6Hsk1EjKiSa4TV9fykhB7K3ijkaM",
+    "hours": [  // from weekday_hours
+      "Monday: Closed",
+      "Tuesday: 5:30 â€“ 9:00 PM",
+      "Wednesday: 5:30 â€“ 6:30 PM",
+      "Thursday: 5:45 â€“ 9:00 PM",
+      "Friday: Closed",
+      "Saturday: 8:30 â€“ 11:30 AM",
+      "Sunday: Closed"
+    ]
+  },
+  "website": "http://oregonki.org/"
+}
